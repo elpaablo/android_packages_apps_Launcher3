@@ -71,6 +71,13 @@
         <intent android:action="android.settings.ACTION_CONTENT_SUGGESTIONS_SETTINGS" />
     </androidx.preference.PreferenceScreen>
 
+    <SwitchPreference      
+        android:key="pref_only_show_running_in_recents"
+        android:title="@string/only_show_running_in_recents_title"
+        android:summary="@string/only_show_running_in_recents_desc"
+        android:defaultValue="@bool/only_show_running_in_recents"
+        android:persistent="true" />
+
     <Preference
         android:key="pref_trust_apps"
         android:title="@string/trust_apps_manager_name"
