@@ -25,13 +25,19 @@ import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCH
 import static com.android.launcher3.userevent.nano.LauncherLogProto.Action.Touch.TAP;
 
 import android.app.Activity;
+import android.app.ActivityManagerNative;
 import android.app.ActivityOptions;
+import android.app.IActivityManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.RemoteException;
+import android.os.UserHandle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.DeviceProfile;
@@ -316,6 +322,79 @@ public interface TaskShortcutFactory {
                 .getScreenshotShortcut(activity, tv.getItemInfo());
         }
         return null;
+    };
+
+    TaskShortcutFactory KILL = (activity, tv) -> {
+        String packageName = tv.getItemInfo().getTargetComponent().getPackageName();
+        return new KillSystemShortcut(activity, tv, packageName);
+    };
+
+    class KillSystemShortcut extends SystemShortcut {
+        private static final String TAG = "KillSystemShortcut";
+        private final TaskView mTaskView;
+        private final BaseDraggingActivity mActivity;
+        private final String mPackageName;
+
+        public KillSystemShortcut(BaseDraggingActivity activity, TaskView tv, String packageName) {
+            super(R.drawable.ic_kill_app, R.string.recent_task_option_kill_app, activity, tv.getItemInfo());
+            mTaskView = tv;
+            mActivity = activity;
+            mPackageName = packageName;
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mPackageName != null) {
+                IActivityManager iam = ActivityManagerNative.getDefault();
+                try {
+                    iam.forceStopPackage(mPackageName, UserHandle.USER_CURRENT);
+                    Toast appKilled = Toast.makeText(mActivity, R.string.recents_app_killed,
+                        Toast.LENGTH_SHORT);
+                    appKilled.show();
+                } catch (RemoteException e) { }
+            }
+            dismissTaskMenuView(mActivity);
+        }
+    }
+
+    class UninstallSystemShortcut extends SystemShortcut {
+        private static final String TAG = "UninstallSystemShortcut";
+        private final TaskView mTaskView;
+        private final BaseDraggingActivity mActivity;
+        private final String mPackageName;
+
+        public UninstallSystemShortcut(BaseDraggingActivity activity, TaskView tv, String packageName) {
+            super(R.drawable.ic_uninstall_no_shadow, R.string.uninstall_drop_target_label, activity, tv.getItemInfo());
+            mTaskView = tv;
+            mActivity = activity;
+            mPackageName = packageName;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Consumer<Boolean> resultCallback = success -> {
+                if (success) {
+                    Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
+                    intent.setData(Uri.parse("package:" + mPackageName));
+                    intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+                    mActivity.startActivity(intent);
+                } else {
+                    mTaskView.notifyTaskLaunchFailed(TAG);
+                }
+            };
+
+            mTaskView.launchTask(true, resultCallback, Executors.MAIN_EXECUTOR.getHandler());
+            dismissTaskMenuView(mActivity);
+        }
+    }
+
+    TaskShortcutFactory UNINSTALL = (activity, tv) -> {
+        String packageName = tv.getItemInfo().getTargetComponent().getPackageName();
+        boolean isSystemApp = Utilities.isSystemApp(activity.getApplicationContext(), packageName);
+        if (isSystemApp) {
+            return null;
+        }
+	return new UninstallSystemShortcut(activity, tv, packageName);
     };
 
     TaskShortcutFactory MODAL = (activity, tv) -> {
