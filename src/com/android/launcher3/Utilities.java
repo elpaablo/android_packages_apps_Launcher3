@@ -139,6 +139,8 @@ public final class Utilities {
 
     private static final long WAIT_BEFORE_RESTART = 250;
 
+    public static final String KEY_SHRINK_NON_ADAPTIVE_ICONS = "pref_shrink_non_adaptive_icons";
+
     /**
      * Indicates if the device has a debug build. Should only be used to store additional info or
      * add extra logging and not for changing the app behavior.
@@ -723,6 +725,12 @@ public final class Utilities {
     public static boolean isDoubleTapGestureEnabled(Context context) {
         SharedPreferences prefs = getPrefs(context.getApplicationContext());
         return prefs.getBoolean(KEY_DT_GESTURE, true);
+    }
+
+    public static boolean shouldShrinkNonAdaptiveIcons(Context context) {
+        SharedPreferences prefs = getPrefs(context.getApplicationContext());
+        boolean shrink = prefs.getBoolean(KEY_SHRINK_NON_ADAPTIVE_ICONS, true);
+        return shrink;
     }
 
     public static void restart(final Context context) {

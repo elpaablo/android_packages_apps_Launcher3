@@ -60,4 +60,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="iconPackPackageDefault" translatable="false">""</string>
     <string name="icon_pack">Icon pack</string>
     <string name="icon_pack_summary">Select a custom icon pack</string>
+    <string name="shrink_non_adaptive_icons_title">Override icons masks</string>
 </resources>

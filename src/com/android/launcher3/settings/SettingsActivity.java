@@ -24,6 +24,7 @@ import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaul
 import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
 
 import static com.arrow.launcher.OverlayCallbackImpl.KEY_ENABLE_MINUS_ONE;
+import static com.android.launcher3.Utilities.KEY_SHRINK_NON_ADAPTIVE_ICONS;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -109,6 +110,8 @@ public class SettingsActivity extends FragmentActivity
                 LauncherAppState.getInstanceNoCreate().setNeedsRestart();
         } else  if (Utilities.KEY_NOTIFICATION_GESTURE.equals(key)) {
                 LauncherAppState.getInstanceNoCreate().setNeedsRestart();
+        } else if (Utilities.KEY_SHRINK_NON_ADAPTIVE_ICONS.equals(key):
+                LauncherAppState.getInstanceNoCreate().getInvariantDeviceProfile().reloadIcons();
         }
 
     }
@@ -263,6 +266,10 @@ public class SettingsActivity extends FragmentActivity
                 case KEY_ENABLE_MINUS_ONE:
                     mShowGoogleAppPref = preference;
                     updateIsGoogleAppEnabled();
+                    return true;
+
+                case KEY_SHRINK_NON_ADAPTIVE_ICONS:
+                    preference.setDefaultValue(Utilities.shouldShrinkNonAdaptiveIcons(getContext()));
                     return true;
 
             }
