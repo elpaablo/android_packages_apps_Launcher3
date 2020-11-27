@@ -341,6 +341,16 @@ public class InvariantDeviceProfile {
         MAIN_EXECUTOR.execute(() -> onConfigChanged(appContext));
     }
 
+    public void reloadIcons() {
+         int changeFlags = CHANGE_FLAG_ICON_PARAMS;
+         IconShape.init(mContext);
+         apply(mContext, changeFlags);
+    }
+
+    public void reload() {
+         onConfigChanged(mContext);
+    }
+
     private void onConfigChanged(Context context) {
         // Config changes, what shall we do?
         InvariantDeviceProfile oldProfile = new InvariantDeviceProfile(this);
@@ -354,7 +364,8 @@ public class InvariantDeviceProfile {
                 numColumns != oldProfile.numColumns ||
                 numFolderColumns != oldProfile.numFolderColumns ||
                 numFolderRows != oldProfile.numFolderRows ||
-                numHotseatIcons != oldProfile.numHotseatIcons) {
+                numHotseatIcons != oldProfile.numHotseatIcons ||
+                numAllAppsColumns != oldProfile.numAllAppsColumns) {
             changeFlags |= CHANGE_FLAG_GRID;
         }
 

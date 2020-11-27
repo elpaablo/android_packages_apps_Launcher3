@@ -111,7 +111,7 @@ public class SettingsActivity extends FragmentActivity
                 LauncherAppState.getInstanceNoCreate().setNeedsRestart();
         } else  if (Utilities.KEY_NOTIFICATION_GESTURE.equals(key)) {
                 LauncherAppState.getInstanceNoCreate().setNeedsRestart();
-        } else if (Utilities.KEY_SHRINK_NON_ADAPTIVE_ICONS.equals(key):
+        } else if (Utilities.KEY_SHRINK_NON_ADAPTIVE_ICONS.equals(key)){
                 LauncherAppState.getInstanceNoCreate().getInvariantDeviceProfile().reloadIcons();
         }
 
