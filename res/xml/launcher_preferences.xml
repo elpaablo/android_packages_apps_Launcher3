@@ -110,6 +110,11 @@
 
 </PreferenceCategory>
 
+    <com.android.launcher3.settings.RestartPreference
+        android:key="pref_restart"
+        android:title="@string/pref_restart_title"
+        android:summary="@string/pref_restart_summary" />
+
     <androidx.preference.PreferenceScreen
         android:key="pref_developer_options"
         android:persistent="false"

@@ -138,6 +138,8 @@ public class InvariantDeviceProfile {
     private final ArrayList<OnIDPChangeListener> mChangeListeners = new ArrayList<>();
     private ConfigMonitor mConfigMonitor;
     private OverlayMonitor mOverlayMonitor;
+    
+    private Context mContext;
 
     @VisibleForTesting
     public InvariantDeviceProfile() {}
@@ -166,6 +168,7 @@ public class InvariantDeviceProfile {
 
     @TargetApi(23)
     private InvariantDeviceProfile(Context context) {
+        mContext = context;
         String gridName = getCurrentGridName(context);
         String newGridName = initGrid(context, gridName);
         if (!newGridName.equals(gridName)) {
