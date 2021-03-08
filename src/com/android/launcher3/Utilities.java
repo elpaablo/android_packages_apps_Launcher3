@@ -17,7 +17,12 @@
 package com.android.launcher3;
 
 import static com.android.launcher3.model.data.ItemInfoWithIcon.FLAG_ICON_BADGED;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
+import android.app.AlarmManager;
+import android.app.KeyguardManager;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
@@ -26,11 +31,14 @@ import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.LauncherApps;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ShortcutInfo;
 import android.content.res.Resources;
@@ -46,9 +54,12 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.icu.text.DateFormat;
 import android.icu.text.DisplayContext;
+import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
+import android.os.CancellationSignal;
 import android.os.DeadObjectException;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.TransactionTooLargeException;
@@ -84,6 +95,7 @@ import com.android.launcher3.shortcuts.ShortcutRequest;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
+import com.android.launcher3.util.LooperExecutor;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -141,12 +153,20 @@ public final class Utilities {
      */
     public static final int EDGE_NAV_BAR = 1 << 8;
 
+    public static final String KEY_SHOW_SEARCHBAR = "pref_show_searchbar";
+    public static final String KEY_DT_GESTURE = "pref_dt_gesture";
+    public static final String KEY_NOTIFICATION_GESTURE = "pref_notification_gesture";
+
+    private static final long WAIT_BEFORE_RESTART = 250;
+
+    public static final String KEY_SHRINK_NON_ADAPTIVE_ICONS = "pref_shrink_non_adaptive_icons";
+    public static final String SHOW_ONLY_RUNNING_APPS = "pref_only_show_running_in_recents";
+
     /**
      * Indicates if the device has a debug build. Should only be used to store additional info or
      * add extra logging and not for changing the app behavior.
      */
-    public static final boolean IS_DEBUG_DEVICE =
-            Build.TYPE.toLowerCase(Locale.ROOT).equals("eng");
+    public static final boolean IS_DEBUG_DEVICE = false;
 
     public static boolean isDevelopersOptionsEnabled(Context context) {
         return Settings.Global.getInt(context.getApplicationContext().getContentResolver(),
@@ -158,6 +178,7 @@ public final class Utilities {
     public static final String EXTRA_WALLPAPER_FLAVOR = "com.android.launcher3.WALLPAPER_FLAVOR";
 
     public static final String KEY_SHOW_QUICKSPACE_NOWPLAYING = "pref_quickspace_np";
+    public static final String SEARCH_PACKAGE = "com.google.android.googlequicksearchbox";
 
     public static boolean IS_RUNNING_IN_TEST_HARNESS =
                     ActivityManager.isRunningInTestHarness();
@@ -619,7 +640,7 @@ public final class Utilities {
             LauncherActivityInfo activityInfo = launcher.getSystemService(LauncherApps.class)
                     .resolveActivity(info.getIntent(), info.user);
             outObj[0] = activityInfo;
-            return activityInfo == null ? null : new IconProvider(launcher).getIconForUI(
+            return activityInfo == null ? null : IconProvider.INSTANCE.get(launcher).getIconForUI(
                     activityInfo, launcher.getDeviceProfile().inv.fillResIconDpi);
         } else if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT) {
             if (info instanceof PendingAddShortcutInfo) {
@@ -758,6 +779,26 @@ public final class Utilities {
         });
     }
 
+    public static boolean isNotificationGestureEnabled(Context context) {
+        SharedPreferences prefs = getPrefs(context.getApplicationContext());
+        return prefs.getBoolean(KEY_NOTIFICATION_GESTURE, true);
+    }
+
+    public static boolean isDoubleTapGestureEnabled(Context context) {
+        SharedPreferences prefs = getPrefs(context.getApplicationContext());
+        return prefs.getBoolean(KEY_DT_GESTURE, true);
+    }
+
+    public static boolean shouldShrinkNonAdaptiveIcons(Context context) {
+        SharedPreferences prefs = getPrefs(context.getApplicationContext());
+        boolean shrink = prefs.getBoolean(KEY_SHRINK_NON_ADAPTIVE_ICONS, true);
+        return shrink;
+    }
+
+    public static boolean showOnlyRunningApps(Context context) {
+	      return getPrefs(context).getBoolean(SHOW_ONLY_RUNNING_APPS, false);
+    }
+
     public static boolean showQuickspace(Context context) {
         SharedPreferences prefs = getPrefs(context.getApplicationContext());
         return prefs.getBoolean(DESKTOP_SHOW_QUICKSPACE, true);
@@ -774,5 +815,89 @@ public final class Utilities {
     public static int getAllAppsScrimAlpha(Context context) {
         SharedPreferences prefs = getPrefs(context.getApplicationContext());
         return prefs.getInt(KEY_ALL_APPS_BACKGROUND_ALPHA, 100);
+    /**
+     * Shows authentication screen to confirm credentials (pin, pattern or password) for the current
+     * user of the device.
+     *
+     * @param context The {@code Context} used to get {@code KeyguardManager} service
+     * @param title the {@code String} which will be shown as the pompt title
+     * @param successRunnable The {@code Runnable} which will be executed if the user does not setup
+     *                        device security or if lock screen is unlocked
+     */
+    public static void showLockScreen(Context context, String title, Runnable successRunnable) {
+        final KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(
+                Context.KEYGUARD_SERVICE);
+
+        if (keyguardManager.isKeyguardSecure()) {
+            final BiometricPrompt.AuthenticationCallback authenticationCallback =
+                    new BiometricPrompt.AuthenticationCallback() {
+                        @Override
+                        public void onAuthenticationSucceeded(
+                                    BiometricPrompt.AuthenticationResult result) {
+                            successRunnable.run();
+                        }
+
+                        @Override
+                        public void onAuthenticationError(int errorCode, CharSequence errString) {
+                            //Do nothing
+                        }
+            };
+
+            final BiometricPrompt.Builder builder = new BiometricPrompt.Builder(context)
+                    .setTitle(title);
+
+            if (keyguardManager.isDeviceSecure()) {
+                builder.setDeviceCredentialAllowed(true);
+            }
+
+            final BiometricPrompt bp = builder.build();
+            final Handler handler = new Handler(Looper.getMainLooper());
+            bp.authenticate(new CancellationSignal(),
+                    runnable -> handler.post(runnable),
+                    authenticationCallback);
+        } else {
+            successRunnable.run();
+        }
+    }
+
+    public static boolean isSystemApp(Context context, String pkgName) {
+        return isSystemApp(context, null, pkgName);
+    }
+
+    public static boolean isSystemApp(Context context, Intent intent) {
+        return isSystemApp(context, intent, null);
+    }
+
+    public static boolean isSystemApp(Context context, Intent intent, String pkgName) {
+        PackageManager pm = context.getPackageManager();
+        String packageName = null;
+        // If the intent is not null, let's get the package name from the intent.
+        if (intent != null) {
+            ComponentName cn = intent.getComponent();
+            if (cn == null) {
+                ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                if ((info != null) && (info.activityInfo != null)) {
+                    packageName = info.activityInfo.packageName;
+                }
+            } else {
+                packageName = cn.getPackageName();
+            }
+        }
+        // Otherwise we have the package name passed from the method.
+        else {
+            packageName = pkgName;
+        }
+        // Check if the provided package is a system app.
+        if (packageName != null) {
+            try {
+                PackageInfo info = pm.getPackageInfo(packageName, 0);
+                return (info != null) && (info.applicationInfo != null) &&
+                        ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+            } catch (NameNotFoundException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

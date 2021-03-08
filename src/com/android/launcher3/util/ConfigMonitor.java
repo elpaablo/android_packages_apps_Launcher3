@@ -32,6 +32,8 @@ import com.android.launcher3.lineage.icon.IconPackStore;
 
 import java.util.function.Consumer;
 
+import static com.android.launcher3.icons.IconPackProvider.PREF_ICON_PACK;
+
 /**
  * {@link BroadcastReceiver} which watches configuration changes and
  * notifies the callback in case changes which affect the device profile occur.

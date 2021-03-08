@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright (C) 2020 ArrowOS
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Show searchbar -->
+    <string name="show_searchbar_title">ᱥᱮᱸᱫᱽᱨᱟ ᱵᱟᱨ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="show_searchbar_summary">ᱚᱲᱟᱜ ᱥᱠᱨᱤᱱ ᱨᱮ ᱥᱮᱸᱫᱽᱨᱟ ᱵᱟᱨ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <string name="state_loading">ᱮᱢᱚᱜ ᱠᱟᱱᱟ \u2026</string>
+    <!-- Gestures -->
+    <string name="gestures_category">ᱜᱮᱥᱪᱚᱨᱠᱚ</string>
+    <string name="pref_notifications_gesture_title">ᱱᱚᱴᱤᱯᱷᱤᱠᱮᱥᱚᱱ ᱜᱮᱥᱪᱚᱨ</string>
+    <string name="pref_notifications_gesture_summary">QS ᱯᱮᱱᱟᱞ ᱫᱮᱠᱷᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱚᱲᱟᱜ ᱥᱠᱨᱤᱱ ᱨᱮ ᱞᱟᱛᱟᱨ ᱥᱮᱫ ᱴᱷᱮᱞᱟᱣ ᱵᱤᱲᱟᱹᱣ ᱢᱮ</string>
+    <string name="pref_dt_gesture_title">ᱵᱟᱨ ᱡᱮᱠᱷᱟ ᱚᱛᱟ ᱜᱮᱥᱪᱚᱨ</string>
+    <string name="pref_dt_gesture_summary">ᱥᱠᱨᱤᱱ ᱚᱯᱷ ᱞᱟᱹᱜᱤᱫ ᱠᱷᱟᱹᱞᱤ ᱡᱟᱭᱜᱟ ᱨᱮ ᱵᱟᱨ ᱡᱮᱠᱷᱟ ᱚᱛᱟᱭ ᱢᱮ</string>
+    <string name="allow_swipe_down_clearall_title">ᱱᱤᱛᱚᱜᱟᱜ ᱠᱚ ᱢᱮᱴᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱞᱟᱛᱟᱨ ᱥᱮᱱ ᱴᱷᱮᱞᱟᱣ ᱢᱮ</string>
+    <string name="allow_swipe_down_clearall_desc">ᱞᱟᱛᱟᱨ ᱴᱷᱮᱱ ᱴᱷᱮᱞᱟᱣ ᱠᱟᱛᱮ ᱚᱣᱟᱹᱨᱣᱤᱣ ᱥᱠᱨᱤᱱ ᱨᱮ ᱱᱤᱛᱚᱜᱟᱜ ᱠᱚ ᱢᱮᱴᱟᱣ ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ</string>
+    <!-- Trust apps -->
+    <string name="trust_apps_manager_name">ᱩᱠᱩ &amp; ᱨᱩᱠᱷᱤᱭᱟᱹ ᱮᱯᱠᱚ</string>
+    <string name="trust_apps_manager_summary">ᱮᱯᱠᱚ ᱩᱠᱩᱭ ᱢᱮ ᱟᱨ ᱵᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹᱭ ᱢᱮ &amp; ᱥᱠᱨᱤᱱ ᱠᱩᱞᱩᱯ ᱛᱮ ᱵᱚᱸᱫ ᱪᱷᱚᱭ ᱢᱮ ᱟᱫᱤ</string>
+    <string name="trust_apps_manager_name_dialog">ᱮᱯ ᱨᱩᱠᱷᱤᱭᱟᱹᱭ ᱢᱮ</string>
+    <string name="trust_apps_auth_manager">ᱩᱠᱩ ᱟᱨ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱮᱯ ᱠᱚ ᱢᱮᱱᱮᱡᱽ ᱞᱟᱹᱜᱤᱫ ᱠᱷᱩᱞᱟᱹᱭ ᱢᱮ</string>
+    <string name="trust_apps_auth_open_app">%1$s ᱠᱷᱩᱞᱟᱹ ᱞᱟᱹᱜᱤᱫ ᱯᱨᱚᱢᱟᱬ ᱮᱢ ᱢᱮ</string>
+    <string name="trust_apps_loading">ᱞᱟᱫᱮᱜ ᱠᱟᱱᱟ\u2026</string>
+    <string name="trust_apps_no_lock_error">ᱮᱯ ᱟᱫᱮᱨ ᱠᱚ ᱵᱚᱸᱫ ᱪᱷᱚ ᱞᱟᱹᱜᱤᱫ ᱫᱚᱭᱟᱠᱟᱛᱮ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱠᱩᱞᱩᱯ ᱥᱠᱨᱤᱱ ᱥᱮᱴ ᱢᱮ</string>
+    <string name="trust_apps_help">ᱜᱚᱲᱚ</string>
+    <string name="trust_apps_info_hidden">ᱰᱨᱚᱣᱟᱹᱨ ᱠᱷᱚᱱ ᱮᱯᱠᱚ ᱟᱨ ᱣᱤᱡᱮᱴ ᱠᱚ ᱩᱠᱩᱭ ᱮᱱᱟ</string>
+    <string name="trust_apps_info_protected">ᱞᱚᱸᱪᱚᱨ ᱠᱷᱚᱱ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱮᱯ ᱠᱚ ᱠᱷᱩᱞᱟᱹ ᱞᱟᱹᱜᱤᱫ ᱯᱨᱚᱢᱟᱬ ᱠᱚ ᱫᱚᱨᱠᱟᱨ</string>
+    <!-- Settings title to show Google Now at -1 screen on launcher. [CHAR LIMIT=50] -->
+    <string name="title_show_google_app">ᱜᱩᱜᱟᱹᱞ ᱮᱯ ᱫᱮᱠᱷᱟᱣ ᱢᱮ</string>
+    <!-- Settings message explaining when the -1 screen is available on an LTR device. [CHAR LIMIT=100] -->
+    <string name="msg_minus_one_on_left">ᱚᱠᱟ ᱡᱷᱚᱜ ᱟᱢ ᱚᱲᱟᱜ ᱥᱠᱨᱤᱱ ᱠᱷᱚᱱ ᱞᱮᱸᱜᱟ ᱛᱤ ᱯᱟᱦᱴᱟ ᱥᱮᱱ ᱴᱷᱮᱞᱟᱣ ᱟᱢ</string>
+    <!-- Settings message explaining when the -1 screen is available on an RTL device. [CHAR LIMIT=100] -->
+    <string name="msg_minus_one_on_right">ᱚᱠᱟ ᱡᱷᱚᱜ ᱟᱢ ᱚᱲᱟᱜ ᱥᱠᱨᱤᱱ ᱠᱷᱚᱱ ᱡᱚᱡᱚᱢ ᱛᱤ ᱯᱟᱦᱴᱟ ᱥᱮᱱ ᱴᱷᱮᱞᱟᱣ ᱟᱢ</string>
+    <!-- Suggestions -->
+    <string name="suggestion_pref_screen_title">ᱥᱚᱞᱦᱟᱠᱚ</string>
+    <string name="suggestion_pref_screen_desc">ᱡᱷᱚᱛᱚ ᱮᱯ ᱞᱟᱹᱜᱤᱫ &amp; ᱚᱲᱟᱜ ᱥᱠᱨᱤᱱ ᱥᱚᱞᱦᱟᱠᱚ</string>
+    <!-- Icon packs -->
+    <string name="icon_pack">ᱟᱭᱠᱚᱱ ᱯᱮᱠ</string>
+    <string name="icon_pack_summary">ᱢᱤᱫᱴᱟᱹᱝ ᱠᱟᱹᱥᱴᱚᱢ ᱟᱭᱠᱚᱱ ᱯᱮᱠ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
+</resources>

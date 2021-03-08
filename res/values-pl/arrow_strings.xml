@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright (C) 2020 ArrowOS
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Show searchbar -->
+    <string name="show_searchbar_title">Pokaż pasek wyszukiwania</string>
+    <string name="show_searchbar_summary">Pokaż pasek wyszukiwania na ekranie głównym</string>
+    <string name="state_loading">Ustawianie\u2026</string>
+    <!-- Gestures -->
+    <string name="gestures_category">Gesty</string>
+    <string name="pref_notifications_gesture_title">Gest powiadomień</string>
+    <string name="pref_notifications_gesture_summary">Przesuń palcem pionowo w dół na ekranie głównym, aby wyświetlić panel szybkich ustawień</string>
+    <string name="pref_dt_gesture_title">Gest dwukrotnego dotknięcia</string>
+    <string name="pref_dt_gesture_summary">Kliknij dwukrotnie w puste miejsce, aby wyłączyć ekran</string>
+    <string name="allow_swipe_down_clearall_title">Przesuń w dół, aby wyczyścić wszystkie ostatnie aplikacje</string>
+    <string name="allow_swipe_down_clearall_desc">Włącz, aby wyczyścić wszystkie ostatnie aplikacje na ekranie podglądu przesuwając palcem w dół</string>
+    <!-- Trust apps -->
+    <string name="trust_apps_manager_name">Ukryte &amp; chronione aplikacje</string>
+    <string name="trust_apps_manager_summary">Ukryj aplikacje lub chroń &amp; ogranicz je poprzez blokadę ekranu itp</string>
+    <string name="trust_apps_manager_name_dialog">Chronione aplikacje</string>
+    <string name="trust_apps_auth_manager">Odblokuj, aby zarządzać ukrytymi i chronionymi aplikacjami</string>
+    <string name="trust_apps_auth_open_app">Uwierzytelnij, aby otworzyć %1$s</string>
+    <string name="trust_apps_loading">Ładowanie\u2026</string>
+    <string name="trust_apps_no_lock_error">Należy skonfigurować blokadę urządzenia, aby ograniczyć dostęp do aplikacji</string>
+    <string name="trust_apps_help">Pomoc</string>
+    <string name="trust_apps_info_hidden">Ukryte aplikacje i ich widżety są ukryte z szuflady aplikacji</string>
+    <string name="trust_apps_info_protected">Chronione aplikacje wymagają uwierzytelnienia w launcherze</string>
+    <!-- Settings title to show Google Now at -1 screen on launcher. [CHAR LIMIT=50] -->
+    <string name="title_show_google_app">Pokaż aplikację Google</string>
+    <!-- Settings message explaining when the -1 screen is available on an LTR device. [CHAR LIMIT=100] -->
+    <string name="msg_minus_one_on_left">Gdy przesuniesz w lewo na ekranie głównym</string>
+    <!-- Settings message explaining when the -1 screen is available on an RTL device. [CHAR LIMIT=100] -->
+    <string name="msg_minus_one_on_right">Gdy przesuniesz w prawo na ekranie głównym</string>
+    <!-- Suggestions -->
+    <string name="suggestion_pref_screen_title">Sugestie</string>
+    <string name="suggestion_pref_screen_desc">Dla wszystkich aplikacji &amp; Sugestie ekranu głównego</string>
+    <!-- Icon packs -->
+    <string name="icon_pack">Paczka ikon</string>
+    <string name="icon_pack_summary">Wybierz niestandardową paczkę ikon</string>
+</resources>

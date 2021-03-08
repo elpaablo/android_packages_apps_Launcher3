@@ -112,6 +112,7 @@ public class InvariantDeviceProfile implements OnSharedPreferenceChangeListener 
     public float iconSize;
     public String iconPack;
     public String iconShapePath;
+    public String iconPack;
     public float landscapeIconSize;
     public int iconBitmapSize;
     public int fillResIconDpi;
@@ -147,6 +148,8 @@ public class InvariantDeviceProfile implements OnSharedPreferenceChangeListener 
 
     private Context mContext;
 
+    private Context mContext;
+
     @VisibleForTesting
     public InvariantDeviceProfile() {}
 
@@ -158,6 +161,7 @@ public class InvariantDeviceProfile implements OnSharedPreferenceChangeListener 
         iconSize = p.iconSize;
         iconPack = p.iconPack;
         iconShapePath = p.iconShapePath;
+        iconPack = p.iconPack;
         landscapeIconSize = p.landscapeIconSize;
         iconBitmapSize = p.iconBitmapSize;
         iconTextSize = p.iconTextSize;
@@ -364,6 +368,16 @@ public class InvariantDeviceProfile implements OnSharedPreferenceChangeListener 
         MAIN_EXECUTOR.execute(() -> onConfigChanged(appContext));
     }
 
+    public void reloadIcons() {
+         int changeFlags = CHANGE_FLAG_ICON_PARAMS;
+         IconShape.init(mContext);
+         apply(mContext, changeFlags);
+    }
+
+    public void reload() {
+         onConfigChanged(mContext);
+    }
+
     private void onConfigChanged(Context context) {
         // Config changes, what shall we do?
         InvariantDeviceProfile oldProfile = new InvariantDeviceProfile(this);
@@ -377,7 +391,8 @@ public class InvariantDeviceProfile implements OnSharedPreferenceChangeListener 
                 numColumns != oldProfile.numColumns ||
                 numFolderColumns != oldProfile.numFolderColumns ||
                 numFolderRows != oldProfile.numFolderRows ||
-                numHotseatIcons != oldProfile.numHotseatIcons) {
+                numHotseatIcons != oldProfile.numHotseatIcons ||
+                numAllAppsColumns != oldProfile.numAllAppsColumns) {
             changeFlags |= CHANGE_FLAG_GRID;
         }
 
